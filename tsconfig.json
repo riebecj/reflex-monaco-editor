@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "src/react/dist",
     "module": "es2020",
     "target": "es5",
     "lib": ["es6", "dom"],
@@ -15,8 +15,11 @@
     "moduleResolution": "node",
     "rewriteRelativeImportExtensions": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "dist/export/nodejs/modules/node-default/node_modules"
+    "paths": {
+      "*": ["./dist/export/nodejs/modules/node-default/node_modules/*"],
+      "monaco-editor-enhanced": ["./src/react/*"]
+    }
   },
-  "include": ["src/react/monaco-editor-enhanced"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/react/**/*"],
+  "exclude": ["node_modules"]
 }

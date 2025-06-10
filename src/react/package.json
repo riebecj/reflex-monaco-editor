@@ -1,6 +1,6 @@
 {
   "name": "monaco-editor-enhanced",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "main": "dist/index.js",
   "engines": {
@@ -10,7 +10,11 @@
   "scripts": {
     "build": "tsc && npm pack"
   },
-  "files": ["dist/*"],
+  "files": [
+    "dist/*",
+    "README.md",
+    "LICENSE"
+  ],
   "peerDependencies": {
     "react": ">= 16.8.0 < 2",
     "react-dom": ">= 16.8.0 < 2"
