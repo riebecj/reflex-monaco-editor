@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - "src/react"
+  workflow_dispatch:
+
 
 env:
   PANTS_CONFIG_FILES: pants.ci.toml
