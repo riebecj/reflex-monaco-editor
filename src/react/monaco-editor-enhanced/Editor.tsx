@@ -1,5 +1,5 @@
 import * as monaco from "monaco-editor";
-import * as vscode from "vscode";  // pants: no-infer-dep
+import * as vscode from "vscode"; // pants: no-infer-dep
 import { loader, Editor, Monaco } from "@monaco-editor/react";
 import React from "react";
 import { language, conf } from "./hcl.tsx";
@@ -10,7 +10,7 @@ import {
   ExecuteCommandParams,
   ExecuteCommandRequest,
   State,
-} from "vscode-languageclient";  // pants: no-infer-dep
+} from "vscode-languageclient"; // pants: no-infer-dep
 import { MonacoLanguageClient } from "monaco-languageclient";
 import {
   toSocket,
@@ -109,7 +109,6 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
   >(undefined);
   const clientOptions = props.clientOptions || undefined;
   const [registered, setRegistered] = React.useState<boolean>(false);
-  
 
   React.useEffect(() => {
     if (editor) {
@@ -117,7 +116,7 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
         registerActions(editor);
         setRegistered(true);
       }
-      
+
       if (clientOptions?.languageServerUrl && !connection) {
         connectToLanguageServer()
           .then((conn) => {
