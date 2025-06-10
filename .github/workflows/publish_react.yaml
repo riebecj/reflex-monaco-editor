@@ -1,0 +1,46 @@
+name: Publish React Package Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/react"
+
+env:
+  PANTS_CONFIG_FILES: pants.ci.toml
+
+jobs:
+  build:
+    name: Build Distribution 📦
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Configure Pants caching to GitHub Actions Cache
+      uses: actions/github-script@v6
+      with:
+        script: |
+          core.exportVariable('PANTS_REMOTE_STORE_ADDRESS', process.env.ACTIONS_CACHE_URL);
+          core.exportVariable('PANTS_REMOTE_OAUTH_BEARER_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN);
+    - name: Pants Package
+      id: pants-package
+      run: |
+        pants package react
+        echo "version=$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' src/react/package.json)" >> $GITHUB_OUTPUT
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/src.react/monaco-editor-enhanced-*.tgz
+        name: ${{ steps.pants-package.outputs.version }}
+        tag_name: ${{ steps.pants-package.outputs.version }}
+        fail_on_unmatched_files: true
+        generate_release_notes: true
+        make_latest: true

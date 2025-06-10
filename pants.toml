@@ -1,0 +1,47 @@
+[GLOBAL]
+pants_version = "2.28.0.dev1"
+backend_packages = [
+  "pants.backend.python",
+  "pants.backend.experimental.python",
+  "pants.backend.experimental.python.lint.ruff.check",
+  "pants.backend.experimental.python.lint.ruff.format",
+  "pants.backend.experimental.javascript",
+  "pants.backend.experimental.typescript",
+  "pants.backend.experimental.javascript.lint.prettier",
+]
+
+[system-binaries]
+system_binary_paths = [
+  "/usr/bin",
+  "/bin",
+  "/usr/local/bin",
+  "/opt/homebrew/bin",
+  "/home/*/.nvm/versions/node/*/bin",
+  "/Users/*/.nvm/versions/node/*/bin",
+]
+
+[cli.alias]
+all = "::"
+lock = "generate-lockfiles"
+venv = "export --py-resolve-format=symlinked_immutable_virtualenv --resolve=python-default --resolve=node-default"
+demo = ":demo"
+react = "src/react:"
+
+[source]
+root_patterns = ["/", "src/"]
+
+[test]
+use_coverage = true
+
+[python]
+interpreter_constraints = [">=3.11.0"]
+enable_resolves = true
+
+[ruff]
+version = "0.11.0"
+
+[nodejs]
+package_manager = "npm"
+
+[nodejs.resolves]
+node-default = "src/react/package-lock.json"

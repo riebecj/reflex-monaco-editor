@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "es2020",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "skipLibCheck": true,
+    "strict": false,
+    "incremental": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "rewriteRelativeImportExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "dist/export/nodejs/modules/node-default/node_modules"
+  },
+  "include": ["src/react/monaco-editor-enhanced"],
+  "exclude": ["node_modules", "dist"]
+}
