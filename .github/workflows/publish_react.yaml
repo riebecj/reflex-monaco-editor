@@ -35,6 +35,7 @@ jobs:
     - name: Pants Package
       id: pants-package
       run: |
+        curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
         pants package react
         echo "version=$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' src/react/package.json)" >> $GITHUB_OUTPUT
     - name: Release
