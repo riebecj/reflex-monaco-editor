@@ -1,13 +1,13 @@
-import * as vscode from "vscode";  // pants: no-infer-dep
+import * as vscode from "vscode"; // pants: no-infer-dep
 import {
   ClientCapabilities,
   FeatureState,
   ReferencesRequest,
   ServerCapabilities,
   StaticFeature,
-} from "vscode-languageclient";  // pants: no-infer-dep
+} from "vscode-languageclient"; // pants: no-infer-dep
 import { MonacoLanguageClient } from "monaco-languageclient";
-import { WorkspaceFoldersFeature } from "vscode-languageclient/lib/common/workspaceFolder.js";  // pants: no-infer-dep
+import { WorkspaceFoldersFeature } from "vscode-languageclient/lib/common/workspaceFolder.js"; // pants: no-infer-dep
 
 interface Position {
   line: number;
@@ -27,7 +27,6 @@ class ShowReferencesFeature implements StaticFeature {
 
   constructor(private _client: MonacoLanguageClient) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   clear(): void {}
 
   getState(): FeatureState {
