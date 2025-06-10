@@ -1,4 +1,4 @@
-name: Publish React Package Release
+name: Publish React Component
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
 
 jobs:
   build:
-    name: Build Distribution 📦
+    name: Release React Component
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -40,7 +40,7 @@ jobs:
         ls -latr dist/src.react/build
         echo "version=$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' src/react/package.json)" >> $GITHUB_OUTPUT
     - name: Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v2.2.2
       with:
         files: dist/src.react/build/monaco-editor-enhanced-*
         name: ${{ steps.pants-package.outputs.version }}
