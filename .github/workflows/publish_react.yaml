@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "src/react"
+      - "src/react/**"
 
 env:
   PANTS_CONFIG_FILES: pants.ci.toml
