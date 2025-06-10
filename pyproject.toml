@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reflex-monaco-enhanced"
+version = "0.0.1"
+description = "Reflex Custom Component: monaco-enhanced"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "", email = "casey@riebe.cloud" }]
+keywords = ["reflex","reflex-custom-components"]
+classifiers = ["Development Status :: 4 - Beta"]
+dependencies = [
+    "reflex==0.7.14",
+]
+
+[project.urls]
+
+[project.optional-dependencies]
+dev = [
+    "uvicorn==0.34.3",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+src = [ "src",]
+force-exclude = true
+extend-exclude = [ "tests", "scripts", "docs", "resources" ]
+output-format = "grouped"
+
+[tool.ruff.lint]
+select = [ "A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT",]
+ignore = [ "ANN101", "ANN102", "D107", "D203", "D401", "D213", "UP006", "COM812", "ISC001", "S101", "INP001"]
+
+[tool.ruff.lint.pylint]
+max-args = 6
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+[tool.pytest.ini_options]
+console_output_style = "count"
+pythonpath = "src"
+testpaths = [ "tests",]
+addopts = "--cov=monaco_editors --cov-report xml --cov-report html --cov-report term-missing --no-cov-on-fail"
+python_files = [ "test_*.py",]
+python_functions = [ "test_*",]
+filterwarnings = [ "ignore::DeprecationWarning",]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [ 
+    "pragma: no cover", 
+    "def __repr__", 
+    "raise AssertionError", 
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:"
+]
+omit = [ "*setup.py", "*tests/*", "__global_coverage__/*", "src/infra/*"]
+
+[tool.setuptools.packages.find]
+where = [ "src",]
