@@ -3,11 +3,9 @@ name: Publish React Component
 on:
   push:
     branches:
-      - riebecj
-    # paths:
-    #   - "src/react"
-  workflow_dispatch:
-
+      - main
+    paths:
+      - "src/react"
 
 env:
   PANTS_CONFIG_FILES: pants.ci.toml
@@ -37,8 +35,7 @@ jobs:
       run: |
         curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
         pants package react
-        ls -latr dist/src.react/build
-        echo "version=$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' src/react/package.json)" >> $GITHUB_OUTPUT
+        echo "version=v$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' src/react/package.json)" >> $GITHUB_OUTPUT
     - name: Release
       uses: softprops/action-gh-release@v2.2.2
       with:
