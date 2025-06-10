@@ -3,9 +3,9 @@ name: Publish React Package Release
 on:
   push:
     branches:
-      - main
-    paths:
-      - "src/react"
+      - riebecj
+    # paths:
+    #   - "src/react"
   workflow_dispatch:
 
 
