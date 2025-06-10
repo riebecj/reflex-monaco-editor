@@ -1,5 +1,5 @@
 import * as monaco from "monaco-editor";
-import * as vscode from "vscode";
+import * as vscode from "vscode";  // pants: no-infer-dep
 import { loader, Editor, Monaco } from "@monaco-editor/react";
 import React from "react";
 import { language, conf } from "./hcl.tsx";
@@ -10,7 +10,7 @@ import {
   ExecuteCommandParams,
   ExecuteCommandRequest,
   State,
-} from "vscode-languageclient";
+} from "vscode-languageclient";  // pants: no-infer-dep
 import { MonacoLanguageClient } from "monaco-languageclient";
 import {
   toSocket,

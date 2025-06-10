@@ -1,13 +1,13 @@
-import * as vscode from "vscode";
+import * as vscode from "vscode";  // pants: no-infer-dep
 import {
   ClientCapabilities,
   FeatureState,
   ReferencesRequest,
   ServerCapabilities,
   StaticFeature,
-} from "vscode-languageclient";
+} from "vscode-languageclient";  // pants: no-infer-dep
 import { MonacoLanguageClient } from "monaco-languageclient";
-import { WorkspaceFoldersFeature } from "vscode-languageclient/lib/common/workspaceFolder.js";
+import { WorkspaceFoldersFeature } from "vscode-languageclient/lib/common/workspaceFolder.js";  // pants: no-infer-dep
 
 interface Position {
   line: number;
