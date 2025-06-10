@@ -37,12 +37,12 @@ jobs:
       run: |
         curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
         pants package react
-        ls -latr dist/src.react
+        ls -latr dist/src.react/build
         echo "version=$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' src/react/package.json)" >> $GITHUB_OUTPUT
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        files: dist/src.react/monaco-editor-enhanced-*
+        files: dist/src.react/build/monaco-editor-enhanced-*
         name: ${{ steps.pants-package.outputs.version }}
         tag_name: ${{ steps.pants-package.outputs.version }}
         fail_on_unmatched_files: true
