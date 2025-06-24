@@ -157,9 +157,7 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
               );
             }
             if (action.reloadClient) {
-              await connection.client.sendNotification(
-                "workspace/didChangeConfiguration",
-              );
+              editor.setModel(editor.getModel());
             }
           },
         });
