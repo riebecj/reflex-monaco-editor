@@ -108,9 +108,7 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
   const [editor, setEditor] = React.useState<
     monaco.editor.IStandaloneCodeEditor | undefined
   >(undefined);
-  const [registered, setRegistered] = React.useState<
-    boolean
-  >(false);
+  const [registered, setRegistered] = React.useState<boolean>(false);
   const clientOptions = props.clientOptions || undefined;
 
   React.useEffect(() => {
@@ -122,15 +120,20 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
 
   React.useEffect(() => {
     if (editor && clientOptions?.languageServerUrl && !connection) {
-      connectToLanguageServer().then((conn) => {
-        setConnection(conn);
-      }).catch((error) => {
-        throw error;
-      });
+      connectToLanguageServer()
+        .then((conn) => {
+          setConnection(conn);
+        })
+        .catch((error) => {
+          throw error;
+        });
     }
   }, [editor, clientOptions, connection]);
 
-  const registerActions = (editor: monaco.editor.IStandaloneCodeEditor, connection: LanguageServerConnection) => {
+  const registerActions = (
+    editor: monaco.editor.IStandaloneCodeEditor,
+    connection: LanguageServerConnection,
+  ) => {
     if (clientOptions?.actions) {
       for (const action of clientOptions.actions) {
         const actionId = action.name.replace(/\s+/g, "-").toLowerCase();
@@ -142,12 +145,21 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
           contextMenuOrder: action.order || 1,
           run: async () => {
             if (action.command.startsWith("terraform-ls.")) {
-              await execWorkspaceLSCommand(connection, action.command, action.arguments);
+              await execWorkspaceLSCommand(
+                connection,
+                action.command,
+                action.arguments,
+              );
             } else {
-              await connection.client.sendNotification(action.command, action.params || {});
+              await connection.client.sendNotification(
+                action.command,
+                action.params || {},
+              );
             }
             if (action.reloadClient) {
-              await connection.client.sendNotification("workspace/didChangeConfiguration");
+              await connection.client.sendNotification(
+                "workspace/didChangeConfiguration",
+              );
             }
           },
         });
@@ -226,7 +238,11 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
     }
   };
 
-  const execWorkspaceLSCommand = async (conn: LanguageServerConnection, command: string, args?: any[]): Promise<void> => {
+  const execWorkspaceLSCommand = async (
+    conn: LanguageServerConnection,
+    command: string,
+    args?: any[],
+  ): Promise<void> => {
     const params: ExecuteCommandParams = {
       command: command,
       arguments: args || undefined,
