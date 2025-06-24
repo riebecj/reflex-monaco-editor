@@ -27,6 +27,7 @@ type ClientAction = {
   keyBindings?: monaco.KeyCode[];
   command: string;
   arguments?: string[];
+  params?: object;
   reloadClient?: boolean;
 };
 
@@ -58,12 +59,12 @@ interface EnhancedEditorProps {
   onClientStateChange?: (state: string) => void;
   onClientClose?: () => void;
   onError?: (error: Error) => void;
-  // onValidate?: (markers: monaco.editor.IMarker[]) => void;
+  onValidate?: (markers: monaco.editor.IMarker[]) => void;
 }
 
 interface LanguageServerConnection {
   client: MonacoLanguageClient;
-  websocket: WebSocket;
+  reader: WebSocketMessageReader;
 }
 
 const registerUncommonLanguages = (_monaco: typeof monaco): void => {
@@ -107,29 +108,32 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
   const [editor, setEditor] = React.useState<
     monaco.editor.IStandaloneCodeEditor | undefined
   >(undefined);
-  const clientOptions = props.clientOptions || undefined;
   const [registered, setRegistered] = React.useState<boolean>(false);
+  const clientOptions = props.clientOptions || undefined;
 
   React.useEffect(() => {
-    if (editor) {
-      if (!registered) {
-        registerActions(editor);
-        setRegistered(true);
-      }
+    if (editor && connection && !registered) {
+      registerActions(editor, connection);
+      setRegistered(true);
+    }
+  }, [editor, connection, registered]);
 
-      if (clientOptions?.languageServerUrl && !connection) {
-        connectToLanguageServer()
-          .then((conn) => {
-            setConnection(conn);
-          })
-          .catch((error) => {
-            props.onError?.(error);
-          });
-      }
+  React.useEffect(() => {
+    if (editor && clientOptions?.languageServerUrl && !connection) {
+      connectToLanguageServer()
+        .then((conn) => {
+          setConnection(conn);
+        })
+        .catch((error) => {
+          throw error;
+        });
     }
   }, [editor, clientOptions, connection]);
 
-  const registerActions = (editor: monaco.editor.IStandaloneCodeEditor) => {
+  const registerActions = (
+    editor: monaco.editor.IStandaloneCodeEditor,
+    connection: LanguageServerConnection,
+  ) => {
     if (clientOptions?.actions) {
       for (const action of clientOptions.actions) {
         const actionId = action.name.replace(/\s+/g, "-").toLowerCase();
@@ -140,10 +144,22 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
           contextMenuGroupId: action.groupId || "default",
           contextMenuOrder: action.order || 1,
           run: async () => {
-            await execWorkspaceLSCommand(action.command, action.arguments);
+            if (action.command.startsWith("terraform-ls.")) {
+              await execWorkspaceLSCommand(
+                connection,
+                action.command,
+                action.arguments,
+              );
+            } else {
+              await connection.client.sendNotification(
+                action.command,
+                action.params || {},
+              );
+            }
             if (action.reloadClient) {
-              connection?.websocket.close(1000, "Reloading client");
-              setConnection(undefined);
+              await connection.client.sendNotification(
+                "workspace/didChangeConfiguration",
+              );
             }
           },
         });
@@ -170,13 +186,6 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
         : undefined,
     };
 
-    transports.reader.onClose(() => {
-      props.onClientClose?.();
-    });
-    transports.reader.onError((error) => {
-      props.onError?.(error);
-    });
-
     return new MonacoLanguageClient({
       name: `${crypto.randomUUID()} client`,
       clientOptions: options,
@@ -188,7 +197,7 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
 
   const connectToLanguageServer = (): Promise<{
     client: MonacoLanguageClient;
-    websocket: WebSocket;
+    reader: WebSocketMessageReader;
   }> => {
     return new Promise((resolve, reject) => {
       // Handle the WebSocket opening event
@@ -205,21 +214,17 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
           languageClient.onDidChangeState((event) =>
             props.onClientStateChange?.(State[event.newState]),
           );
-          // Register any features
           registerFeatures(languageClient);
           // Start the language client
           await languageClient.start();
+          websocket.onerror = (error) => {
+            reject(error);
+          };
           // return the client
-          resolve({ client: languageClient, websocket: websocket });
+          resolve({ client: languageClient, reader: reader });
         } catch (error) {
-          props.onError?.(error);
           reject(error);
         }
-      };
-
-      // Handle WebSocket errors
-      websocket.onerror = (error) => {
-        reject(error);
       };
     });
   };
@@ -233,23 +238,20 @@ function EnhancedEditor(props: EnhancedEditorProps): React.JSX.Element {
     }
   };
 
-  function execWorkspaceLSCommand<T>(
+  const execWorkspaceLSCommand = async (
+    conn: LanguageServerConnection,
     command: string,
     args?: any[],
-  ): Promise<T> {
+  ): Promise<void> => {
     const params: ExecuteCommandParams = {
       command: command,
       arguments: args || undefined,
     };
-    console.log("Executing command: ", params);
-    if (connection) {
-      return connection.client.sendRequest<ExecuteCommandParams, T, void>(
-        ExecuteCommandRequest.type,
-        params,
-      );
-    }
-    return Promise.reject(new Error("Language client not initialized"));
-  }
+    await conn.client.sendRequest<ExecuteCommandParams, any, void>(
+      ExecuteCommandRequest.type,
+      params,
+    );
+  };
 
   return (
     <Editor
