@@ -55,7 +55,7 @@ output-format = "grouped"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = [ "D107", "D203", "D401", "D213", "UP006", "COM812", "ISC001", "S101", "INP001"]
+ignore = [ "D107", "D203", "D401", "D213", "UP006", "COM812", "ISC001", "S101", "INP001", ]
 
 [tool.ruff.lint.pylint]
 max-args = 6
