@@ -46,7 +46,6 @@ class CodeLensProviders(SimpleNamespace):
             return lenses;
         },
         resolveCodeLens: function (model, codeLens, token) {
-            console.log(model, codeLens, token)
             return codeLens;
         },
     });

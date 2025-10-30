@@ -40,7 +40,6 @@ class MonacoEditorsReflexConfig:
         """
         return {
             "worker": {"format": "es"},
-            "assetsInclude": ["**/*.vsix"],
             "optimizeDeps": {
                 "include": [
                     "@codingame/monaco-vscode-api",
