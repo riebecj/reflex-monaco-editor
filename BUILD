@@ -1,5 +1,3 @@
-resource(name="tsconfig", source="tsconfig.json")
-
 python_requirements(
     name="pyproject",
     source="pyproject.toml",
@@ -9,8 +7,10 @@ pex_binary(
     name="demo",
     entry_point="reflex",
     args=["run"],
-    dependencies=[":pyproject#uvicorn", ":pyproject#reflex", "src/demo:demo"],
+    dependencies=[":pyproject", "src/demo:demo"],
 )
+
+python_source(name="rxconfig", source="rxconfig.py")
 
 files(
     name="build_files",

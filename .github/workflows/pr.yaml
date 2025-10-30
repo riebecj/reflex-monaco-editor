@@ -1,4 +1,4 @@
-name: React PR
+name: Lint, Test, and Package
 
 on: [ pull_request ]
 
@@ -6,7 +6,7 @@ env:
   PANTS_CONFIG_FILES: pants.ci.toml
 
 jobs:
-  pr:
+  source:
     name: PR Check
     runs-on: ubuntu-latest
     steps:
@@ -26,6 +26,8 @@ jobs:
     - name: Pants Lint
       run: |
         curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
-        pants lint src/react/monaco-editor-enhanced
+        pants lint all
+    - name: Pants Test
+      run: pants test all
     - name: Pants Package
-      run: pants package react
+      run: pants package all

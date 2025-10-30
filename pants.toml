@@ -1,13 +1,11 @@
 [GLOBAL]
-pants_version = "2.28.0.dev1"
+pants_version = "2.28.0"
 backend_packages = [
   "pants.backend.python",
   "pants.backend.experimental.python",
   "pants.backend.experimental.python.lint.ruff.check",
   "pants.backend.experimental.python.lint.ruff.format",
-  "pants.backend.experimental.javascript",
-  "pants.backend.experimental.typescript",
-  "pants.backend.experimental.javascript.lint.prettier",
+  "pants.backend.experimental.adhoc",
 ]
 
 [system-binaries]
@@ -23,9 +21,9 @@ system_binary_paths = [
 [cli.alias]
 all = "::"
 lock = "generate-lockfiles"
-venv = "export --py-resolve-format=symlinked_immutable_virtualenv --resolve=python-default --resolve=node-default"
+venv = "export --py-resolve-format=symlinked_immutable_virtualenv --resolve=python-default"
 demo = ":demo"
-react = "src/react:"
+test-debug = "--test-debug test --pytest-args='--headed'"
 
 [source]
 root_patterns = ["/", "src/"]
@@ -39,9 +37,3 @@ enable_resolves = true
 
 [ruff]
 version = "0.11.0"
-
-[nodejs]
-package_manager = "npm"
-
-[nodejs.resolves]
-node-default = "src/react/package-lock.json"

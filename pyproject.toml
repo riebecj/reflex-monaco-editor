@@ -3,37 +3,59 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "reflex-monaco-enhanced"
-version = "0.0.1"
-description = "Reflex Custom Component: monaco-enhanced"
+name = "reflex-monaco-editor"
+version = "1.0.0"
+description = "Reflex Monaco Editor component with LSP capability"
 readme = "README.md"
-license = { text = "Apache-2.0" }
-requires-python = ">=3.10"
-authors = [{ name = "", email = "casey@riebe.cloud" }]
-keywords = ["reflex","reflex-custom-components"]
-classifiers = ["Development Status :: 4 - Beta"]
-dependencies = [
-    "reflex==0.7.14",
-]
+license = {file = "LICENSE" }
 
-[project.urls]
+requires-python = ">=3.10"
+authors = [{ name = "riebecj" }]
+keywords = ["reflex","reflex-custom-components", "monaco"]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development",
+    "Topic :: Utilities"
+]
+dependencies = [
+    "reflex>=0.8.16",
+    "reflex-vite-config-plugin==0.0.4"
+]
 
 [project.optional-dependencies]
 dev = [
-    "uvicorn==0.34.3",
+    "pytest~=7.4",
+    "pytest-cov~=4.1",
+    "pytest-asyncio~=0.23.8",
+    "uvicorn~=0.38.0",
+    "selenium~=4.38.0",
+    "pytest-playwright~=0.7.1",
+    "psutil~=7.1.2",
 ]
+
+[project.urls]
+Repository = "https://github.com/riebecj/reflex-monaco-editor"
+Issues = "https://github.com/riebecj/reflex-monaco-editor/issues"
+Documentation = "https://github.com/riebecj/reflex-monaco-editor?tab=readme-ov-file#reflex-monaco-editor"
+
+[tool.setuptools.package-data]
+monaco_editors = ["*.vsix"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py39"
+target-version = "py311"
 src = [ "src",]
 force-exclude = true
 extend-exclude = [ "tests", "scripts", "docs", "resources" ]
 output-format = "grouped"
 
 [tool.ruff.lint]
-select = [ "A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT",]
-ignore = [ "ANN101", "ANN102", "D107", "D203", "D401", "D213", "UP006", "COM812", "ISC001", "S101", "INP001"]
+select = ["ALL"]
+ignore = [ "D107", "D203", "D401", "D213", "UP006", "COM812", "ISC001", "S101", "INP001"]
 
 [tool.ruff.lint.pylint]
 max-args = 6
@@ -57,6 +79,7 @@ addopts = "--cov=monaco_editors --cov-report xml --cov-report html --cov-report 
 python_files = [ "test_*.py",]
 python_functions = [ "test_*",]
 filterwarnings = [ "ignore::DeprecationWarning",]
+asyncio_mode = "strict"
 
 [tool.coverage.run]
 branch = true
@@ -71,7 +94,7 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:"
 ]
-omit = [ "*setup.py", "*tests/*", "__global_coverage__/*", "src/infra/*"]
+omit = [ "*setup.py", "*tests/*", "__global_coverage__/*" ]
 
 [tool.setuptools.packages.find]
 where = [ "src",]
