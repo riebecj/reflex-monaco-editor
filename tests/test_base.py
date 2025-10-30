@@ -1,4 +1,5 @@
 import importlib
+import os
 from pathlib import Path
 import pytest
 import reflex as rx
@@ -59,10 +60,10 @@ def EditorApp():
     app.add_page(index)
 
 
-class TestEditor:
-    def test_basic(self, create_app_harness: AppHarness, page: Page):
-        with create_app_harness.create(EditorApp) as editor_app:
-            assert editor_app.frontend_url is not None
-            page.goto(editor_app.frontend_url)
-            page.bring_to_front
-            expect(page.get_by_test_id("basic_monaco_editor")).to_be_visible()
+def test_editor_render(self, create_app_harness: AppHarness, page: Page):
+    os.environ.setdefault("HOME", Path.cwd())
+    with create_app_harness.create(EditorApp) as editor_app:
+        assert editor_app.frontend_url is not None
+        page.goto(editor_app.frontend_url)
+        page.bring_to_front
+        expect(page.get_by_test_id("basic_monaco_editor")).to_be_visible()
