@@ -56,7 +56,7 @@ def EditorApp():
             )
         )
 
-    app = rx.App(enable_state=False,)
+    app = rx.App()
     app.add_page(index)
 
 

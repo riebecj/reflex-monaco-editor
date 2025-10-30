@@ -16,7 +16,7 @@ def test_get_vite_config():
     vite_config = config.MonacoEditorsReflexConfig.get_vite_config()
     assert vite_config["worker"]["format"] == "es"
     assert len(vite_config["optimizeDeps"]["include"]) == 23
-    meta_url_plugin = vite_config["optimizeDeps"]["esbuildOptions"]["plugins"][0]
+    meta_url_plugin = vite_config["optimizeDeps"]["rollupOptions"]["plugins"][0]
     assert isinstance(meta_url_plugin, config.RawJS)
     assert meta_url_plugin.code == "importMetaUrlPlugin"
     vsix_plugin = vite_config["plugins"][0]

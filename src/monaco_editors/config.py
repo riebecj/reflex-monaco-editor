@@ -66,7 +66,7 @@ class MonacoEditorsReflexConfig:
                     "vscode-oniguruma",
                     "@vscode/vscode-languagedetection",
                 ],
-                "esbuildOptions": {
+                "rollupOptions": {
                     "plugins": [RawJS("importMetaUrlPlugin")],
                 },
             },
