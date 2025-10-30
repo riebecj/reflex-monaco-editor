@@ -60,7 +60,7 @@ def EditorApp():
     app.add_page(index)
 
 
-def test_editor_render(self, create_app_harness: AppHarness, page: Page):
+def test_editor_render(create_app_harness: AppHarness, page: Page):
     os.environ.setdefault("HOME", Path.cwd())
     with create_app_harness.create(EditorApp) as editor_app:
         assert editor_app.frontend_url is not None
