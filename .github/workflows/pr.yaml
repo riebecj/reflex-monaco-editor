@@ -28,6 +28,8 @@ jobs:
         curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
         pants lint all
     - name: Pants Test
-      run: pants test all
+      run: |
+        sudo apt-get install libgles2 gstreamer1.0-libav
+        pants test all
     - name: Pants Package
       run: pants package all
