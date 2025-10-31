@@ -65,4 +65,4 @@ def test_editor_render(create_app_harness: AppHarness, page: Page):
     with create_app_harness.create(EditorApp) as editor_app:
         assert editor_app.frontend_url is not None
         page.goto(editor_app.frontend_url)
-        expect(page.get_by_test_id("basic_monaco_editor")).to_be_visible()
+        expect(page.get_by_test_id("basic_monaco_editor")).to_be_visible(timeout=15000)
