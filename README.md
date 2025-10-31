@@ -1,5 +1,9 @@
 # reflex-monaco-editor
 
+[![PyPI Version](https://img.shields.io/pypi/v/reflex-monaco-editor)](https://pypi.org/project/reflex-monaco-editor/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/reflex-monaco-editor)](https://pypi.org/project/reflex-monaco-editor/)
+[![License](https://img.shields.io/github/license/riebecj/reflex-monaco-editor)](https://github.com/riebecj/reflex-monaco-editor/blob/main/LICENSE)
+
 ## Overview
 
 `reflex-monaco-editor` provides integration of the Monaco Editor with support for Terraform syntax highlighting and language features via `terraform-ls`. This project enables embedding a powerful code editor in Python web applications, with extensible language support.
