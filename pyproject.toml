@@ -97,4 +97,4 @@ exclude_lines = [
 omit = [ "*setup.py", "*tests/*", "__global_coverage__/*" ]
 
 [tool.setuptools.packages.find]
-where = [ "src",]
+where = [ "src" ]
