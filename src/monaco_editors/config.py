@@ -55,7 +55,6 @@ class MonacoEditorsReflexConfig:
                     "@codingame/monaco-vscode-localization-service-override",
                     "@codingame/monaco-vscode-model-service-override",
                     "@codingame/monaco-vscode-monarch-service-override",
-                    "@codingame/monaco-vscode-standalone-languages",
                     "@codingame/monaco-vscode-textmate-service-override",
                     "@codingame/monaco-vscode-theme-defaults-default-extension",
                     "@codingame/monaco-vscode-theme-service-override",
@@ -64,7 +63,6 @@ class MonacoEditorsReflexConfig:
                     "vscode/localExtensionHost",
                     "vscode-textmate",
                     "vscode-oniguruma",
-                    "@vscode/vscode-languagedetection",
                 ],
                 "rollupOptions": {
                     "plugins": [RawJS("importMetaUrlPlugin")],
