@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reflex-monaco-editor"
-version = "1.0.2"
+version = "1.0.3"
 description = "Reflex Monaco Editor component with LSP capability"
 readme = "README.md"
 license = {file = "LICENSE" }
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [{ name = "riebecj" }]
 keywords = ["reflex","reflex-custom-components", "monaco"]
 classifiers = [

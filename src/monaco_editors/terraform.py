@@ -65,6 +65,29 @@ def get_platform(purpose: Literal["terraform-ls", "lsp-ws-proxy"]) -> str:
             return "linux"
 
 
+def get_architecture() -> str:
+    """Determines the machine architecture string for downloading binaries.
+
+    Returns:
+        str: The architecture identifier string used in download URLs.
+
+    Raises:
+        ValueError: If the machine architecture is unsupported.
+    """
+    arch = platform.machine()
+    if "x86" in arch:
+        return "amd64"
+    if "arm" in arch or "aarch" in arch:
+        if "64" in arch:
+            return "arm64"
+        return "arm"
+    if "386" in arch:
+        return "386"
+
+    msg = f"Unsupported machine architecture: {arch}"
+    raise ValueError(msg)
+
+
 def download_terraform_ls() -> None:
     """Downloads and extracts the Terraform language server binary if not already present.
 
@@ -77,7 +100,7 @@ def download_terraform_ls() -> None:
         package_json = get_vscode_extension_package_json()
         terraform_ls_version = package_json["langServer"]["version"]
         os = get_platform("terraform-ls")
-        arch = platform.machine()
+        arch = get_architecture()
         console.debug(f"Downloading terraform-ls v{terraform_ls_version} for {os} {arch}")
         base_url = "https://releases.hashicorp.com/terraform-ls/0.36.5/terraform-ls"
         response = get(f"{base_url}_{terraform_ls_version}_{os}_{arch}.zip")
