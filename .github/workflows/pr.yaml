@@ -13,10 +13,14 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install libgles2 gstreamer1.0-libav
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: "3.11"
+    - name: Install Pants
+      run: curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
     - name: Configure Pants caching to GitHub Actions Cache
       uses: actions/github-script@v6
       with:
@@ -24,12 +28,8 @@ jobs:
           core.exportVariable('PANTS_REMOTE_STORE_ADDRESS', process.env.ACTIONS_CACHE_URL);
           core.exportVariable('PANTS_REMOTE_OAUTH_BEARER_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN);
     - name: Pants Lint
-      run: |
-        curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
-        pants lint all
+      run: pants lint all
     - name: Pants Test
-      run: |
-        sudo apt-get update && sudo apt-get install libgles2 gstreamer1.0-libav
-        pants test all
+      run: pants test all
     - name: Pants Package
       run: pants package all
