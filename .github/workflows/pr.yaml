@@ -29,7 +29,7 @@ jobs:
         pants lint all
     - name: Pants Test
       run: |
-        sudo apt-get install libgles2 gstreamer1.0-libav
+        sudo apt-get update && sudo apt-get install libgles2 gstreamer1.0-libav
         pants test all
     - name: Pants Package
       run: pants package all
