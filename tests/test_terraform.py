@@ -25,6 +25,30 @@ def test_get_platform(mock_platform: MagicMock, purpose: str, system_type: str):
     terraform.get_platform.cache_clear()
 
 
+@pytest.mark.parametrize(
+    "machine,expected",
+    [
+        ("x86_64", "amd64"),
+        ("i386", "386"),
+        ("armv7l", "arm"),
+        ("aarch64", "arm64"),
+        ("arm64", "arm64"),
+        ("arm", "arm"),
+        ("386", "386"),
+    ],
+)
+@patch("monaco_editors.terraform.platform")
+def test_get_architecture_valid(mock_platform: MagicMock, machine, expected):
+    mock_platform.machine.return_value = machine
+    assert terraform.get_architecture() == expected
+
+@patch("monaco_editors.terraform.platform")
+def test_get_architecture_invalid(mock_platform: MagicMock):
+    mock_platform.machine.return_value = "mips"
+    with pytest.raises(ValueError, match="Unsupported machine architecture: mips"):
+        terraform.get_architecture()
+
+
 @pytest.mark.parametrize("exists", [False, True])
 @patch("monaco_editors.terraform.zipfile")
 @patch("monaco_editors.terraform.get_bin_dir")
